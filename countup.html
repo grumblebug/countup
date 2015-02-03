@@ -1,0 +1,181 @@
+<htnl>
+<!--
+Fun With JavaScript: The “Princess Diana Is Still Dead” Count-Up Timer
+Copyright 2006 Doug Vanderweide
+
+Modified November 2012 by grumblebug to serve as a general purpose count-up timer and added comments
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!--
+Edit the style sheet to change the appearance of the timer
+-->
+<style type="text/css">
+        <!--
+        body {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: Small;
+        }
+        
+        
+        #divContainer {
+            width: 210px;
+            height: 30px;
+            border: 4px solid #3D0F0F;
+            background-color: #662222;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            padding-top: 10px;
+        }
+
+        
+        #divTime {
+            font-weight: bold;
+            text-align: center;
+                        color: #FFFFFF;
+        }
+        -->
+        </style>
+<body>
+        <div id="divContainer">
+            <div id="divTime">
+<script language="javascript">
+            // The new Date variable is the editable portion
+            function countUpTimer() {
+                var begin = new Date('October 31, 1910 24:29:00');
+                var now = new Date();
+                var nowYear = now.getFullYear();
+                var out = "";
+                
+                var seconds = now.getTime() - begin.getTime();
+                seconds = Math.floor(seconds / 1000);
+                                
+                var dy = Math.floor(seconds / 31536000);
+                seconds -= (dy * 31536000);
+                seconds -= (countLeapYears(begin, now) * 86400);
+                
+                //seconds -= (getExtraMonthDays(now) * 86400);
+                var dmo = Math.floor(seconds / 2592000);
+                seconds -= (dmo * 2592000);
+                                
+                var dd = Math.floor(seconds / 86400);
+                seconds -= (dd * 86400);
+                
+                var dh = Math.floor(seconds / 3600);
+                seconds -= (dh * 3600);
+                
+                var dm = Math.floor(seconds / 60);
+                seconds -= (dm * 60);
+                
+                seconds = Math.floor(seconds);
+                        
+                // Display relevant count-up date information        
+                if (dy > 0) {
+                                         out += dy.toString() + " Year";
+                if(dy != 1) {
+                    out += "s";
+                }
+                out += "  ";
+                                }
+                
+                                if (dmo > 0) {
+                out += dmo.toString() + " Month";
+                if(dmo != 1) {
+                    out += "s";
+                }
+                out += "  ";
+                                }
+                
+                                if (dd > 0) {
+                out += dd.toString() + " Day";
+                if(dd != 1) {
+                    out += "s";
+                }
+                }
+                
+                                
+                document.getElementById('divTime').innerHTML = out;
+                setTimeout('countUpTimer()', 1000);
+            }
+            
+            function countLeapYears(startDate, endDate) {
+                var x = 0;
+                var startYear = startDate.getFullYear();
+                var startMonth = startDate.getMonth();
+                var endYear = endDate.getFullYear();
+                
+                if(startMonth > 1) {
+                    startYear++;
+                }
+                
+                for(var i = startYear; i < endYear; i++) {
+                    if(isLeapYear(i)) {
+                        x++;
+                    }
+                }
+                return x;
+            }
+            
+            function getExtraMonthDays(nowDate) {
+                var thismonth = nowDate.getMonth();
+                var thisyear = nowDate.getFullYear();
+                var days = 0;
+                var out;
+                
+                if(thismonth > 0) {
+                    days++;
+                }
+                if(thismonth > 1) {
+                    days = days - 2;
+                }
+                if(isLeapYear(thisyear) && thismonth > 1) {
+                    days++;
+                }
+                if(thismonth > 2) {
+                    days++;
+                }
+                if(thismonth > 4) {
+                    days++;
+                }
+                if(thismonth > 6) {
+                    days++;
+                }
+                if(thismonth > 7) {
+                    days++;
+                }
+                if(thismonth > 9) {
+                    days++;
+                }
+            
+                return days;
+            }
+            
+            function isLeapYear(someyear) {
+                if(someyear % 4 == 0) {
+                    if(someyear % 100 != 0) {
+                        return true;
+                    }
+                    else if(someyear % 400 == 0) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+countUpTimer();
+        </script>
+                        </div>
+        </div>
+  </body>
+  </html>
